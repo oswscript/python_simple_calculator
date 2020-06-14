@@ -3,122 +3,120 @@
 import os
 import platform
 
+#Main Class
 class Controller(object):
     
 	def __init__(self):
-		self.resultado = ''
+		self.result = ''
 		self.num1 = 0
 		self.num2 = 0
 		self.num2 = 0
 		self.type_operation = 0
 		self.runAgn = ''
   
-
-	
+  #data capture process
 	def process_main(self,init= True):
      
 		print(""" 
 
 		------------------------------------------------------
 		|====================================================| 
-		|========== Bienvenido al sistema Matemático ========|
+		|========= Welcome to the mathematical system =======|
 		|====================================================|
 		------------------------------------------------------
 
-		Seleccione 1 : Para Sumar 
-		Seleccione 2 : Para Restar 
-		Seleccione 3 : Para Multiplicar 
-		Seleccione 4 : Para Dividir
-		Seleccione 5 : Para Salir
+		Choose 1 : To Add 
+		Choose 2 : To Subtract 
+		Choose 3 : To Multiply 
+		Choose 4 : To Divide
+		Choose 5 : To Leave
 				
 		""")
-  
-		#MSG INPUT
-  
+		#Check if selected for the first time, or multiple times
 		if init:
-			self.type_operation = int(raw_input("Seleccione una operación: ")) #Input Number operation
+			self.type_operation = int(raw_input("Choose an operation: ")) 
 		else:
-			self.type_operation = int(raw_input("***Error. Para dividir, el primer número debe ser mayor al segundo.***\nPor favor, seleccione una operación otra vez: ")) #Input Number operation
-
+			self.type_operation = int(raw_input("***Error. To divide, the first number must be greater than the second.***\nPlease choose an operation again: "))
    
-		#CHECK OPERATION TYPE
-		if self.type_operation > 0 and self.type_operation <= 4:
-
-				self.num1 = int(raw_input("Ingrese el valor 1: "))
-				self.num2 = int(raw_input("Ingrese el valor 2: "))
-
-				print "\n********** El resultado es: " + str(self.operate()) + " ********** \n"
-	
-				self.runAgain()
-
-		elif self.type_operation == 5:
-
-				self.runAgain()
-								
+		if self.type_operation > 0 and self.type_operation <= 4:#if the selection is between 1 and 4
+				self.num1 = int(raw_input("Ingrese el valor 1: "))#Input first number
+				self.num2 = int(raw_input("Ingrese el valor 2: "))#Input second number
+				print "\n********** El resultado es: " + str(self.operate()) + " ********** \n"#show result of the operation
+				self.runAgain()#ask if I want to use the system again
+		elif self.type_operation == 5:#if the selection is 5
+				self.runAgain()#ask if I want to use the system again		
 		else:
-
+			#If the selected process number is different from the existing ones, repeat the process automatically
 			return self.process_main(False)
-		
- 
+		 
+  	#data capture process
   	def operate(self):
 
-		try:
-			
-			if self.type_string() == 'sumar':
-       
-				self.resultado = self.num1 + self.num2
-			
-			elif self.type_string()  == 'restar':
-       
-				self.resultado = self.num1 - self.num2
-			
-			elif self.type_string()  == 'multiplicar':
-       
-				self.resultado = self.num1 * self.num2
-		
-			elif self.type_string()  == 'dividir':
+			try:
 				
-				if not self.check_value_numbers():
-        
-					return self.process_main(False)
- 
+				#if it is add
+				if self.type_string() == 'add':
+				
+					self.result = self.num1 + self.num2
+				
+				#if it is subtract
+				elif self.type_string()  == 'subtract':
+				
+					self.result = self.num1 - self.num2
+				
+				#if it is multiply
+				elif self.type_string()  == 'multiply':
+				
+					self.result = self.num1 * self.num2
+			
+				#if it is divide
+				elif self.type_string()  == 'divide':
+      
+					#check if the first number is greater than the second
+					if not self.check_value_numbers():
+					
+						return self.process_main(False)#if the first is less, repeat "choose process"
+	
+					else:
+					
+						self.result = self.num1 / self.num2#if everything is correct divide
+
 				else:
-        
-					self.resultado = self.num1 / self.num2
+					
+					self.result = "General error"
+			
+				return self.result
 
-			else:
-				
-				self.resultado = False
+			except NameError:
+			
+				print "General error"
     
-			return self.resultado
-
-		except NameError:
-     
-			print "Error general"
-
+	#function to check if the first number is greater than the second
 	def check_value_numbers(self):
 		
 		if self.num1 < self.num2:
 			return False
 		else:
 			return True
-
+ 
+	#function to check the String of the operation
 	def type_string(self):
 		
 		if self.type_operation == 1:
-			return 'sumar'
+			return 'add'
 
 		elif self.type_operation == 2:
-			return 'restar'
+			return 'subtract'
 
 		elif self.type_operation == 3:
-			return 'multiplicar'
+			return 'multiply'
 
 		elif self.type_operation == 4:
-			return 'dividir'
+			return 'divide'
 
-	def runAgain(self): #Making Runable Problem1353
-		self.runAgn = raw_input("Desea continuar usando el sistema? N/S: ")
+	#function to repeat the process or exit the system
+	def runAgain(self): #
+		self.runAgn = raw_input("You want to continue using the system? N/Y: ")
 		
 		if self.runAgn == 's':
 			if platform.system() == "Windows": #Checking User OS For Clearing The Screen
@@ -129,6 +127,14 @@ class Controller(object):
 			self.runAgain()
 		else:
       
-			quit("Adios") #Print GoodBye Message And Exit The Program
+			quit(""" 
+
+			-----------------------
+			|===================| 
+			|======= Bye =======|
+			|===================|
+			-----------------------
+				
+		""") #Print BYE Message And Exit The Program
    
    
